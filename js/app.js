@@ -16,6 +16,7 @@
 		el:'#todoapp',
 		data:{
 			todos,
+			currentEditing:null
 		},
 		methods:{
 			addTodo(){
@@ -35,6 +36,17 @@
 			toggleAll(){
 				var checked = event.target.checked
 				this.todos.forEach(todo=>todo.completed = checked)
+			},
+			removeTodo(idx,event){
+				this.todos.splice(idx,1)
+			},
+			removeAllDone(){
+				this.todos = this.todos.filter(item=>!item.completed)
+			}
+		},
+		computed:{
+			leftCount(){
+				return this.todos.filter((item)=>{return !item.completed}).length
 			}
 		}
 	})
