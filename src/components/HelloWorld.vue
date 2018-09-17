@@ -2,27 +2,19 @@
   <div class="hello">
 		<section class="todoapp">
 			<header class="header">
-				<input class="new-todo" placeholder="What needs to be done?" autofocus>
+				<input class="new-todo" placeholder="What needs to be done?" v-model="newmsg" @keyup.enter="addNew">
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
-			<section class="main">
+			<section class="main" v-show="items.length">
 				<input id="toggle-all" class="toggle-all" type="checkbox">
 				<label for="toggle-all">Mark all as complete</label>
-				<ul class="todo-list">
+				<ul class="todo-list" v-for="item in items">
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-					<li class="completed">
-						<div class="view">
-							<input class="toggle" type="checkbox" checked>
-							<label>Taste JavaScript</label>
-							<button class="destroy"></button>
-						</div>
-						<input class="edit" value="Create a TodoMVC template">
-					</li>
 					<li>
 						<div class="view">
 							<input class="toggle" type="checkbox">
-							<label>Buy a unicorn</label>
+							<label>{{item.name}}</label>
 							<button class="destroy"></button>
 						</div>
 						<input class="edit" value="Rule the web">
@@ -59,9 +51,10 @@
 		</footer>
   </div>
 </template>
-<script src="./js.js">
-
+<script src="./localstorage.js">
 </script>
+
+<script src="./js.js"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
