@@ -5,6 +5,7 @@ export default {
       return {
         items:todoStorage.fetch(),
         newmsg:'',
+        edited:null,
       }
     },
     watch:{
@@ -29,6 +30,9 @@ export default {
                 completed:false
             })
             this.newmsg = '';
+        },
+        remove(idx){
+            this.items.splice(idx,1)
         }
     }
   }
