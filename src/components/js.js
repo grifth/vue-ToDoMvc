@@ -31,8 +31,28 @@ export default {
             })
             this.newmsg = '';
         },
-        remove(idx){
+        remove(item){
+            var idx = this.items.indexOf(item)
             this.items.splice(idx,1)
+        },
+        editItem(item){
+            this.before = item.name;
+            this.edited = item 
+        },
+        doneEdit(ite){
+            console.log(!this.edited);
+            
+
+            this.edited = null 
+            ite.name = ite.name.trim()
+            // console.log(item)
+            if(!ite.name){
+                this.remove(idx)
+            }
+        },
+        cancelEdit(item){
+            this.edited = null;
+            item.name = this.before 
         }
     }
   }

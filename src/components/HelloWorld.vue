@@ -8,16 +8,16 @@
 			<section class="main" v-show="items.length">
 				<input id="toggle-all" class="toggle-all" type="checkbox">
 				<label for="toggle-all">Mark all as complete</label>
-				<ul class="todo-list" v-for="(item,index) in items">
+				<ul class="todo-list" >
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-					<li class="todo" :class="{completed:item.completed,editing:item === edited}">
+					<li class="todo" :class="{completed:item.completed,editing:item === edited}" v-for="item in items">
 						<div class="view">
 							<input class="toggle" type="checkbox" v-model="item.completed">
-							<label @dblclick="edited=item">{{item.name}}</label>
-							<button class="destroy" @dblclick="remove(index)"></button>
+							<label @dblclick="editItem(item)">{{item.name}}</label>
+							<button class="destroy" @dblclick="remove(item)"></button>
 						</div>
-						<input class="edit" v-model="item.name">
+						<input class="edit" type="text" v-model="item.name" @keyup.enter="doneEdit(item)" @blur="cancelEdit(item)" @keyup.esc="cancelEdit(item)">
 					</li>
 				</ul>
 			</section>
