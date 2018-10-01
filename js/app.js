@@ -1,6 +1,6 @@
 
 	// Your starting point. Enjoy the ride!
-	let STORAGE_KEY = 'todos-vuejs'
+	let STORAGE_KEY = 'todomvc'
 	let todoStorage = {
 		fetch(){
 			var todos = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')
@@ -14,60 +14,38 @@
 			localStorage.setItem(STORAGE_KEY,JSON.stringify(todos))
 		}
 	}
-
-	var filters = {
-		all(todos){
-			return todos
-		},
-		active(todos){
-			return todos.filter((todo)=>{
-				return !todo.completed
-			})
-		},
-		completed(todos){
-			return todos.filter((todo)=>{
-				return todo.completed 
-			})
+	Vue.directive('focus',{
+		inserted(el){
+			el.focus()
 		}
-	}
-
-	Vue.directive('focus', {
-		// 当被绑定的元素插入到 DOM 中时……
-		inserted: function (el) {
-		  // 聚焦元素
-		  // el.focus()
-		  // el 就是作用了 v-focus 的 DOM 元素
-		  console.log(el)
-		  el.focus()
-		}
-	  })
-	
+	})
 	var app = new Vue({
+		el:'.todoapp',
 		data:{
 			todos:todoStorage.fetch(),
 			newTodo:'',
-			edited:null,
-			vbl:'all'
+			edited:null
 		},
 		methods:{
 			add(){
-				var val = this.newTodo && this.newTodo.trim()
+				var val  = this.newTodo && this.newTodo.trim()
 				if(!val){
-					return 
+					return
 				}
 				this.todos.push({
-					id:todoStorage.uid++,
-					title:val,
-					completed:false
+					name:val,
+					completed:false,
+					id:todoStorage.uid++
 				})
 				this.newTodo = ''
 			},
 			remove(todo){
-				var idx = todo.id
+				var idx =  todo.id
 				this.todos.splice(idx,1)
 			},
 			edit(todo){
-				this.befor = todo.title
+				console.log(11);
+				todo.before = todo.name
 				this.edited = todo
 			},
 			done(todo){
@@ -76,36 +54,12 @@
 					return
 				}
 				this.edited = null
-				todo.title = todo.title.trim()
-				if(!todo.title){
+				todo.name = todo.name.trim()
+				if(!todo.name){
 					this.remove(todo)
 				}
-			},
-			cancel(todo){
-				this.edited = null
-				todo.title = this.before
-			},
-			removeAll(){
-				this.todos = filters.active(this.todos)
 			}
-		},
-		computed:{
-			filteredTodos(){
-				return filters[this.vbl](this.todos)
-			},
-			remaining(){
-				return filters.active(this.todos).length
-			},
-			all:{
-				get(){
-					return this.remaining === 0 
-				},
-				set(val){
-					this.todos.forEach((todo)=>{
-						todo.completed = val 
-					})
-				}
-			}
+
 		},
 		watch:{
 			todos:{
@@ -113,20 +67,7 @@
 					todoStorage.save(c)
 				},
 				deep:true
-			}			
-		},
-		directives: {
-		  // 当作用了该指令的元素所在模板发生更新的时候，则这个 update 钩子会自动调用
-		  editingFocus: {
-			// 在指令钩子中，函数内部的 this 是 window
-			update(el, binding) {
-			  if (binding.value) {
-				el.focus()
-			  }
 			}
-		  }
 		}
-	}) 
 
-
-app.$mount('.todoapp')
+	})
