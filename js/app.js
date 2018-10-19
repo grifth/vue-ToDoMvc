@@ -1,3 +1,4 @@
+(function(window){
 
 	// Your starting point. Enjoy the ride!
 
@@ -21,7 +22,8 @@
 			el.focus()
 		}
 	})
-	var app = new Vue({
+	
+	window.app = new Vue({
 		el: '.todoapp',
 		data: {
 			todos: todoStorage.fetch(),
@@ -116,3 +118,5 @@
 		window.app.filterState = hash
 	}
 	window.onhashchange()
+
+})(window);
